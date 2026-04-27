@@ -1,0 +1,752 @@
+{
+  "name": "My workflow 5",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        112,
+        608
+      ],
+      "id": "e702fdcb-41a3-4edd-8f42-d24d51de1e5c",
+      "name": "When chat message received",
+      "webhookId": "c04a92b0-9b91-4082-8732-c537a0e9c221"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        432,
+        608
+      ],
+      "id": "1bc169a2-46fc-4ed9-8cc8-2db9905918a3",
+      "name": "Chat Memory Manager"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "user",
+              "message": "={{ $('When chat message received').item.json.chatInput }}"
+            },
+            {
+              "type": "ai",
+              "message": "={{ $json.message.content }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        3088,
+        608
+      ],
+      "id": "fe1480c1-3d40-43e1-9c65-ac2bdb72a7ab",
+      "name": "Chat Memory Manager1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6dfe9ec2-c938-49da-bbea-4bb62f693f22",
+              "name": "output",
+              "value": "={{ $('Merge').item.json.message.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3856,
+        624
+      ],
+      "id": "50be26fd-68a6-4417-aea4-8f5bd0c9cd88",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "useDataOfInput": 2
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3600,
+        624
+      ],
+      "id": "382c709a-35d5-435d-885d-6f127fa66313",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2160,
+        1104
+      ],
+      "id": "f151b2e6-461d-46c5-a32d-d25ae49c0fc8",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "xcvxycv"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        832
+      ],
+      "id": "2479613f-8bd6-4d4f-9bcf-eb4e872446e6",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "mode": "delete",
+        "deleteMode": "all"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        432,
+        976
+      ],
+      "id": "7e6776dd-0699-49f1-9a0a-5482cf4029d0",
+      "name": "Chat Memory Manager2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e1c8a10c-7ac7-4d24-b6a2-abe0da3e6be8",
+              "leftValue": "={{ $json.messagesCount }}",
+              "rightValue": 6,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        784,
+        608
+      ],
+      "id": "4f901d5e-a5b4-48a2-8ca2-56b8d8334e66",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "content": "## Kapitel 3: Aufgabenstellung zum n8n KI Assessment Center Orchestrator\n\n**Vervollständige diesen unvollständigen n8n Workflow**\n\nDie **blauen Aufgabenkasten** bedeuten, dass du die komplette Node **ergänzen** musst. Bei **lila Aufgabenkasten**, musst du die bereits **bestehende Node** anpassen, achte auch darauf die Nodes **richtig zu verknüpfen**.",
+        "height": 220,
+        "width": 500,
+        "color": 3
+      },
+      "id": "19e8c193-e1e4-41c4-90a6-711b7b40f2da",
+      "name": "Sticky Note15",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -512,
+        -32
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## KI Assessment Center Orchestrator\n### Dieser Workflow simuliert ein komplettes Vorstellungsgespräch mit drei verschiedenen Phasen.\n\nDas Ziel ist es, einen Bewerber vollautomatisch zu interviewen, ihn in eine Stresssituation zu bringen und anschließend eine detaillierte psychologische Auswertung zu erstellen.\n\n### Der Ablauf (State Machine)\n1.  **Phase 1: Der Host (Smalltalk)**\n    * Ein freundlicher Recruiter sammelt Stammdaten (Name, Ort, Erfahrung).\n    * Er leitet das Gespräch und stellt immer exakt eine Folgefrage.\n2.  **Phase 2: Der Angry Customer (Simulation)**\n    * Sobald der Host fertig ist (nach ca. 6 Nachrichten), wechselt der Bot die Persönlichkeit.\n3.  **Phase 3: Der Scorer (Analyse)**\n    * Am Ende (nach ca. 10 Nachrichten) wird das Gespräch beendet.\n    * Der Bot analysiert nun **jede einzelne Antwort** des Kandidaten im Detail (Loop) auf Empathie, Stressresistenz etc.\n    * Danach fasst ein weiteres LLM die Erkenntnisse des Scorers zusammen\n\n### Deine Aufgabe\nVervollständige die fehlenden Logik-Bausteine (Lila & Blaue Boxen), um den Workflow zum Leben zu erwecken!",
+        "height": 624,
+        "width": 500
+      },
+      "id": "99389347-5bdb-4779-98ad-4a91bb968ad2",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -512,
+        208
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 1.1 Workflow triggern\n\nWorkflows in n8n sind Trigger basiert. Da wir trigger on chat message eingestellt haben, kannst du den Workflow starten, indem du unten in das Chatfenster schreibst",
+        "height": 420,
+        "width": 280,
+        "color": 7
+      },
+      "id": "e1bf838a-3a39-44b2-9811-ce57c94c77ae",
+      "name": "Sticky Note16",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        16,
+        416
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 1. Phase: Der Assessment Center Host:\n[Erfahre mehr über die Code Node](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.code/)\n\nWir nutzen eine **Code Node** (ac_host Vorbereitung), um der KI exakte Anweisungen zu geben, bevor wir sie über den **HTTP Request** (ac_host HTTP Request) aufrufen.\n\n### Was hier passiert\n1.  **Code Node (Datenaufbereitung):**\n    * **System Prompt:** Hier definieren wir die Persona (\"Du bist ein Recruiter bei Unternemen x\") und das Ziel (Stammdaten sammeln).\n    * **Context Injection:** Wir holen den Chatverlauf aus dem Memory Manager und bauen ihn in ein sauberes JSON-Array (`messages`) um.\n    * **JSON Construction:** Wir erstellen das finale Paket für Ollama (`model`, `stream`, `messages`), damit der HTTP Request es nur noch abschicken muss.\n\n2.  **HTTP Request (Die Ausführung):**\n    * Diese Node nimmt das JSON aus der Code Node und sendet es an das lokale LLM.\n    * Sie wartet auf die Antwort (den Text des Hosts) und gibt ihn zurück.\n\n### Funktionsweise\n1.  **Chat Trigger:** Der Workflow startet, sobald eine Nachricht im Chatfenster eingeht.\n2.  **Chat Memory Manager:** Lädt den bisherigen Gesprächsverlauf. Das ist essenziell, damit der Host sich an den Namen und vorherige Antworten erinnert (Context).\n3.  **LLM (Host):** Eine KI (Llama 3.1), die instruiert ist, freundlich nach **Name**, **Wohnort** und **Erfahrung** zu fragen.\n4.  **Routing-Logik:** Solange weniger als 6 Nachrichten ausgetauscht wurden, bleiben wir in dieser Schleife.",
+        "height": 544,
+        "width": 952,
+        "color": 7
+      },
+      "id": "99a28629-ad44-43ca-86ae-7f5059984209",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        992,
+        -144
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "const systemPrompt = `Du bist ein freundlicher und professioneller Assessment Center Host und stellst immer exakt eine Folgefrage, bei der Firma \"TechNova Solutions\".\nDu führst gerade das Erstgespräch für die Stelle als \"Junior Java Developer\".\n\nDEINE ZIELE IM ERSTEN SCHRITT (SMALLTALK):\nLerne den Kandidaten kurz kennen, bevor das eigentliche Assessment beginnt. Führe ein flüssiges Gespräch.\nSorge dafür, dass du im Laufe des Gesprächs beiläufig folgende Infos erfährst, falls sie nicht schon genannt wurden:\n1. Den Namen des Kandidaten.\n2. Den aktuellen Wohnort (für uns wichtig wegen Remote/On-Site).\n3. Grobe Vorerfahrung (Studium/Ausbildung/erste Jobs).\n\nWICHTIGE VERHALTENSREGELN:\n- Sprich wie ein Mensch, nicht wie ein Formular.\n- VERBOTEN: Sag niemals Dinge wie \"Ich habe den Namen notiert\" oder \"Fehlende Information: Wohnort\".\n- VERBOTEN: Sprich nicht über den Kandidaten in der dritten Person (\"Der Kandidat hat gesagt...\"), sondern sprich ihn direkt an (\"Du hast gesagt...\").\n- Wenn der Kandidat etwas erzählt (z.B. Studium), geh kurz darauf ein (\"Spannend, Softwaretechnik passt super zu uns\"), bevor du die nächste Frage stellst.\n- Stelle immer exakt EINE Folgefrage.\n\nABSCHLUSS DER PHASE:\nWenn du das Gefühl hast, du weißt grob, wer vor dir sitzt (Name, Ort, Background), dann leite charmant zum ersten Fach-Szenario über.`;\n\n// Hole die strukturierten Messages aus dem Chat Memory Manager\nconst chatHistory = $('Chat Memory Manager').item.json.messages || [];\n\n// Baue das Messages Array für Ollama\nconst messages = [\n  {\n    role: \"system\",\n    content: systemPrompt\n  }\n];\n\n// Füge alle History Messages hinzu \nfor (const msg of chatHistory) {\n  // Erst die User-Message\n  if (msg.human) {\n    messages.push({\n      role: \"user\",\n      content: msg.human\n    });\n  }\n  \n  if (msg.ai) {\n    messages.push({\n      role: \"assistant\",\n      content: msg.ai\n    });\n  }\n}\n\n// Füge die aktuelle User-Message hinzu\nmessages.push({\n  role: \"user\",\n  content: $('When chat message received').first().json.chatInput\n});\n\nreturn {\n  json: {\n    model: \"llama3.2:latest\",\n    stream: false,\n    messages: messages\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2080,
+        240
+      ],
+      "id": "32f638c1-596f-4f85-9bad-64f57ad09c14",
+      "name": "ac_host Vorbereitung"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/chat",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2352,
+        240
+      ],
+      "id": "787c49d2-2264-4666-8591-5854a0d55bf3",
+      "name": "ac_host HTTP Request"
+    },
+    {
+      "parameters": {
+        "content": "## 1.2 Modell auswählen\n* Wähle das korrekte Modell aus, nämlich  den **ac_host:latest** \n",
+        "height": 404,
+        "width": 280,
+        "color": 6
+      },
+      "id": "96a396aa-9f0d-434a-842d-45b1f1ab9a59",
+      "name": "Sticky Note17",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1984,
+        -32
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 2.1 If-Node\n[Erfahre mehr über die If-Node](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.if/)\nHier entscheiden wir, wann der \"Angry Customer\" genug gewütet hat und die Analyse beginnt.\n**Die Logik:**\nWir prüfen, wie viele Nachrichten insgesamt schon gesendet wurden. Ab **10 Nachrichten** beenden wir das Szenario.\n**Deine Aufgabe:**\n1. Suche rechts auf + nach der If-Node und füge diese hinzu. Verknüofe dise mit der ersten if Node und den True Output mit angry_customer Vorbereitung und den false output mit user input extrahieren\n1.  Öffne die **If-Node**.\n2.  Suche links im Input (unter *Chat Memory Manager*) die Variable `messagesCount`.\n3.  Zieh diese Variable per **Drag & Drop** in das Feld **Value 1**.\n4.  Stelle die Bedingung ein: **Number** -> **Larger** (Größer als) -> **10**.\n\n**Hinweis:**\n*Achte darauf, dass das Feld als **Expression** (grün markiert) erkannt wird, damit sich der Wert bei jeder Nachricht dynamisch ändert.\n* Du kannst dich bei der Implementation an der ersten If-Node orientieren\n",
+        "height": 788,
+        "width": 312,
+        "color": 5
+      },
+      "id": "b9583552-f48e-44e6-b931-5f2c8da95a67",
+      "name": "Sticky Note18",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1424,
+        512
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Den gesamten Verlauf laden\nconst fullHistory = $('Chat Memory Manager').item.json.messages || [];\n\n// 2. Definieren, wo der Schnitt war (z.B. nach 6 Nachrichten)\nconst cutOffPoint = 6; \n\n// 3. Slicing: Alles vor dem Cut-Point wird gelöscht (Host-Vergangenheit weg)\nlet customerOnlyHistory = fullHistory.slice(cutOffPoint);\n\n// 4. Der System-Prompt für den Wütenden Kunden\nconst systemPrompt = `Du bist Michael Bauer, ein extrem verärgerter Kunde.\nDein Login funktioniert nicht. Du bist wütend und ungeduldig.\nReagiere auf das, was der Support (User) sagt.`;\n\n// 5. Das neue Array initialisieren\nconst messages = [\n  {\n    role: \"system\",\n    content: systemPrompt\n  }\n];\n\n// Die bereinigte History anhängen\nfor (const msg of customerOnlyHistory) {\n  if (msg.human) messages.push({ role: \"user\", content: msg.human });\n  if (msg.ai) messages.push({ role: \"assistant\", content: msg.ai });\n}\n\n// Den aktuellen Input anhängen (Ohne Fallback, wenn leer, dann leer)\nconst currentUserInput = $('When chat message received').first().json.chatInput;\nif (currentUserInput) {\n    messages.push({ role: \"user\", content: currentUserInput });\n}\n\nreturn {\n  json: {\n    model: \"llama3.2:latest\", // Hier Modell wählen\n    stream: false,\n    messages: messages,\n    options: {\n        temperature: 0.9 // 0.9 macht ihn emotionaler/wütender als Standard\n    }\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1856,
+        1104
+      ],
+      "id": "2170b544-92bd-4e7d-b3e4-9e9572765365",
+      "name": "angry_customer Vorbereitung"
+    },
+    {
+      "parameters": {
+        "content": "## 2.3 HTTP Request\n[Erfahre mehr über die HTTP Request Node](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest/)\n### Deine Aufgabe\nErgänze die ** angry_customer HTTP Request** Node, um die vorbereiteten Daten an Ollama zu senden.\n1.  Konfiguriere sie wie folgt:\n    * **Method:** `POST`\n    * **URL:** `http://localhost:11434/api/chat`\n    * **Send Body:** Aktivieren (Toggle an)\n    * **Body Content Type:** JSON\n    * **Specify Body:** Wähle **\"Using JSON\"** \n    * Dann trage in das Feld `{{ $json }}` ein um das Objekt zu übergeben\n\n**Warum \"Using Input Data\"?**\nWeil die Code Node davor bereits das perfekte JSON-Paket (`model`, `messages`, `stream`) geschnürt hat. Wir müssen es nur noch durchreichen!",
+        "height": 756,
+        "width": 360,
+        "color": 6
+      },
+      "id": "ae374b94-0a9f-45b9-832f-80ea859bdac9",
+      "name": "Sticky Note19",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2016,
+        512
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 2. Phase : Der \"Angry Customer\"\n\nHier findet der Persönlichkeitswechsel statt. Damit der \"Wütende Kunde\" nicht verwirrt ist, haben wir in der **Code Node** davor den alten Chatverlauf mit dem Host abgeschnitten (\"Slicing\"). Der Kunde startet also mit einem frischen Gedächtnis.\n\nDie Daten sind vorbereitet, aber **die Verbindung zur KI fehlt noch!**",
+        "height": 244,
+        "width": 408,
+        "color": 7
+      },
+      "id": "526a5cff-d088-4f0c-bb10-99b1a2a92b51",
+      "name": "Sticky Note20",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        992,
+        512
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 576,
+        "width": 1944
+      },
+      "id": "5626d4bf-584e-4ce4-8f35-e070f9c0adb6",
+      "name": "Sticky Note21",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        976,
+        -160
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 816,
+        "width": 1944
+      },
+      "id": "c984b6cc-7e67-4a15-bbf4-20a33b3f282c",
+      "name": "Sticky Note22",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        976,
+        496
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 944,
+        "width": 1944
+      },
+      "id": "93dea7c2-e827-451b-a907-3608f938990b",
+      "name": "Sticky Note23",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        976,
+        1392
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 3. Phase: Der Scorer \n[Erfahre mehr über Loops in n8n](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.splitinbatches/)\n\nDas Gespräch ist beendet. Jetzt folgt die Detail-Analyse. Statt den gesamten Chat pauschal bewerten zu lassen, nutzen wir hier das **Map-Reduce-Prinzip** für maximale Präzision.\n\n### Der Ablauf (Theorie)\n1.  **Map (Der Loop):** Wir zerlegen den Chat in einzelne Nachrichten. Die **Loop Over Items** Node geht jede Nachricht einzeln durch.\n2.  **Scoring (Im Loop):** Eine spezialisierte KI bewertet *nur diesen einen Satz* auf 5 Kriterien (Empathie, Stressresistenz, etc.).\n3.  **Parsing:** Damit wir mit den Werten rechnen können, zwingen wir die KI zu einem **JSON-Output** und parsen diesen.\n4.  **Reduce (Aggregation):** Nach dem Loop sammelt die **Code Node** alle 20+ Einzelbewertungen ein, berechnet mathematisch exakte Durchschnitte und erstellt das finale Gutachten.\n",
+        "height": 580,
+        "width": 424,
+        "color": 7
+      },
+      "id": "a4ea96a4-52ce-4b45-ac55-a1266e85a484",
+      "name": "Sticky Note24",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        992,
+        1408
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/chat",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2304,
+        2144
+      ],
+      "id": "b1fb3d03-c4a8-4e3b-af1d-bc84d9c1237f",
+      "name": "scorer HTTP Request2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Input holen (Die einzelne Nachricht aus dem Loop)\nconst userText = $input.item.json.text;\n\n// 2. System Prompt\nconst systemPrompt = `Du bist ein präziser HR-Assessment-Algorithmus.\nDeine Aufgabe: Analysiere die folgende Aussage eines Kandidaten in einem Assessment Center.\n\nBEWERTUNGSKRITERIEN (Skala 1.0 bis 5.0):\n- kommunikation: Klarheit, Ausdrucksweise.\n- empathie: Verständnis für die Gegenseite.\n- problemloesung: Konstruktive Ansätze.\n- professionalitaet: Sachlichkeit, Form.\n- stressresistenz: Umgang mit Druck/Konflikten.\n\nWICHTIG:\n- Antworte AUSSCHLIESSLICH im JSON-Format.\n- Kein Markdown (kein \\`\\`\\`json).\n- Wenn eine Kategorie aus dem kurzen Satz nicht ablesbar ist, gib den neutralen Wert 3.0.\n\nZwingendes Ausgabeformat:\n{\n  \"kommunikation\": 0.0,\n  \"empathie\": 0.0,\n  \"problemloesung\": 0.0,\n  \"professionalitaet\": 0.0,\n  \"stressresistenz\": 0.0,\n  \"kommentar\": \"Kurze Begründung\"\n}`;\n\n// 3. Payload bauen\nconst payload = {\n  model: \"llama3.2:latest\", // Passendes Modell auswählen\n  stream: false,\n  format: \"json\", // Zwinge Ollama zu validem Json\n  messages: [\n    { role: \"system\", content: systemPrompt },\n    { role: \"user\", content: userText }\n  ]\n};\n\nreturn {\n  json: payload\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2112,
+        2144
+      ],
+      "id": "9323c2f6-b57c-4311-ab88-481e6ba3e5b4",
+      "name": "scorer Vorbereitung"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Antwort bereinigen und in valides json wandeln\nconst ollamaResponse = $input.item.json.message.content;\n\ntry {\n  const cleanData = JSON.parse(ollamaResponse);\n  \n  return {\n    json: cleanData\n  };\n} catch (error) {\n  return {\n    json: {\n      error: \"Konnte JSON nicht parsen\",\n      raw_text: ollamaResponse\n    }\n  };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2464,
+        2144
+      ],
+      "id": "4d59fe44-c57a-4247-8f8c-a0e9829161cc",
+      "name": "ensure json"
+    },
+    {
+      "parameters": {
+        "content": "## 3.1 Loop over Items\n[Erfahre mehr über die Loop Over Items Node](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.splitinbatches/)\n### Deine Aufgabe\n**1. Hinzufügen & Verbinden:**\n* Füge die Node **Loop Over Items** hinzu.\n* **Input:** Verbinde sie mit der Node *\"User Input extrahieren\"* \n* **Output (Loop):** Verbinde den Ausgang **\"Loop\"** mit der Node *\"Scorer Vorbereitung\"*  achte darauf den Loop sicherzustellen indem du esure json Node wieder an den input der Loop over items Node verbindest\n* Done: Verbinde den Ausgang done mit dem Vorbereitung Zusammenfassung\n\n**2. Konfiguration:**\n* Öffne die Node Einstellungen. Suche nach der Einstellung **Batch Size**. Setze den Wert auf **`1`**.\n**Warum Batch Size 1?** Wir wollen, dass n8n sich immer exakt **eine** Nachricht nimmt, diese durch den Scorer jagt, und dann erst die nächste nimmt. \n\n",
+        "height": 644,
+        "width": 360,
+        "color": 5
+      },
+      "id": "dff5888a-14e9-43e2-99cf-67ff9002d1ac",
+      "name": "Sticky Note25",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1824,
+        1408
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "const history = $('Chat Memory Manager').item.json.messages || [];\n\n// nur userinput rausfiltern\nconst userMessages = history.filter(msg => msg.human);\n\n//umwandeln in n8n-Items, damit der Loop funktioniert\nreturn userMessages.map((msg, index) => {\n  return {\n    json: {\n      messageIndex: index + 1,\n      text: msg.human\n    }\n  }\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        1856
+      ],
+      "id": "2b05c9a8-1013-4155-bb71-563d41398f52",
+      "name": "user input extrahieren"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:11434/api/chat",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        2752,
+        1600
+      ],
+      "id": "39949def-5f5b-4bc2-88a3-2c56241a04a5",
+      "name": "Zusammenfassung ResultHTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. alle Ergebnisse aus dem Loop\nconst loopResults = $('Loop Over Items').all();\n// 2. Speicher für die Summen der 5 Kategorien vorbereiten\nlet stats = {\n    kommunikation: 0,\n    empathie: 0,\n    problemloesung: 0,\n    professionalitaet: 0,\n    stressresistenz: 0\n};\n\nlet protocol = \"\";\nlet count = 0;\n\nloopResults.forEach((item, index) => {\n  // Das JSON aus dem Loop-Output holen (Parser Node)\n  const data = item.json; \n  \n  if (data && typeof data.kommunikation !== 'undefined') {\n    \n    // A) Protokoll-Text für diese einzelne Antwort bauen\n    protocol += `### Antwort ${index + 1}\\n`;\n    protocol += `Analyse: \"${data.kommentar}\"\\n`;\n    protocol += `Werte: Komm: ${data.kommunikation}, Emp: ${data.empathie}, Prob: ${data.problemloesung}, Prof: ${data.professionalitaet}, Stress: ${data.stressresistenz}\\n\\n`;\n\n    // B) Summen addieren für die Durchschnitte\n    stats.kommunikation += parseFloat(data.kommunikation || 0);\n    stats.empathie += parseFloat(data.empathie || 0);\n    stats.problemloesung += parseFloat(data.problemloesung || 0);\n    stats.professionalitaet += parseFloat(data.professionalitaet || 0);\n    stats.stressresistenz += parseFloat(data.stressresistenz || 0);\n    \n    count++;\n  }\n});\n\n// 3. Durchschnitte berechnen\nlet averages = {};\nif (count > 0) {\n    averages = {\n        kommunikation: (stats.kommunikation / count).toFixed(1),\n        empathie: (stats.empathie / count).toFixed(1),\n        problemloesung: (stats.problemloesung / count).toFixed(1),\n        professionalitaet: (stats.professionalitaet / count).toFixed(1),\n        stressresistenz: (stats.stressresistenz / count).toFixed(1)\n    };\n} else {\n    // Fallback falls keine Daten da sind\n    averages = { kommunikation: 0, empathie: 0, problemloesung: 0, professionalitaet: 0, stressresistenz: 0 };\n}\n\n// 4. System-Prompt\nconst systemPrompt = `Du bist der Senior Recruiter \"TechNova Solutions\".\nDas Assessment ist beendet. Hier ist die detaillierte Auswertung des Kandidaten basierend auf 5 Dimensionen.\n\n--- DURCHSCHNITTSWERTE (Skala 1-5) ---\n- Kommunikation: ${averages.kommunikation}\n- Empathie: ${averages.empathie}\n- Problemlösung: ${averages.problemloesung}\n- Professionalität: ${averages.professionalitaet}\n- Stressresistenz: ${averages.stressresistenz}\n\n--- DETAILLIERTES PROTOKOLL DER ANTWORTEN ---\n${protocol}\n--- PROTOKOLL ENDE ---\n\nDEINE AUFGABE:\nSchreibe ein abschließendes, professionelles Gutachten an den Kandidaten.\n1. Fasse die Leistung zusammen. Gehe dabei KONKRET auf die 5 Kategorien ein (z.B. \"Deine Empathie war stark, aber...\").\n2. Nutze das Protokoll, um Beispiele für gutes oder schlechtes Verhalten zu nennen.\n3. Gib am Ende eine klare Empfehlung (Einstellen oder Ablehnen) basierend auf dem Gesamtbild.\n4. Sprich den Kandidaten direkt mit \"Du\" an.`;\n\n// 5. Das Paket für den HTTP Request\nreturn {\n  json: {\n    model: \"llama3.2:latest\", \n    stream: false,\n    messages: [\n      {\n        role: \"system\",\n        content: systemPrompt\n      },\n      {\n        role: \"user\",\n        content: \"Bitte erstelle jetzt das finale Gutachten.\"\n      }\n    ]\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2560,
+        1600
+      ],
+      "id": "a1828387-333e-4427-b6a0-6ca4973a91f0",
+      "name": "vorbereitung Zusammenfassung HTTP Request"
+    },
+    {
+      "parameters": {
+        "content": "## 2.2 Modell auswählen\n* Wähle das korrekte Modell aus für den angry_customer \n",
+        "height": 308,
+        "width": 200,
+        "color": 6
+      },
+      "id": "87105511-58ae-4e53-9580-2b6121b967af",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1792,
+        960
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 4.2 Modell auswählen\n* Wähle das korrekte Modell aus für den scorer\n",
+        "height": 308,
+        "width": 200,
+        "color": 6
+      },
+      "id": "d95b9d4f-1d61-451c-80e5-fbf190ecb0a3",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2064,
+        2000
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 4.3 Modell auswählen\n* Wähle das korrekte Modell aus um eine allgemeine Antwort zu genereiren\n",
+        "height": 356,
+        "width": 200,
+        "color": 6
+      },
+      "id": "38209f12-b585-4aad-98e7-392ab4361e11",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2512,
+        1408
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Chat Memory Manager",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory Manager": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory Manager1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Chat Memory Manager1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Chat Memory Manager",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Chat Memory Manager1",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Chat Memory Manager2",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "ac_host Vorbereitung",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "ac_host Vorbereitung": {
+      "main": [
+        [
+          {
+            "node": "ac_host HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ac_host HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Chat Memory Manager1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "angry_customer Vorbereitung": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "scorer HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "ensure json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "scorer Vorbereitung": {
+      "main": [
+        [
+          {
+            "node": "scorer HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Zusammenfassung ResultHTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "vorbereitung Zusammenfassung HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Zusammenfassung ResultHTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "user input extrahieren": {
+      "main": [
+        []
+      ]
+    },
+    "ensure json": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c302832a-fb6a-4017-8fb2-03c41dbdf375",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a75f4eb0c55ef1574d87da40c19e32ebbf387ab86314df4b1a7d1d3bc03c8604"
+  },
+  "id": "xu6EHKCYEBo6uY8p",
+  "tags": []
+}
